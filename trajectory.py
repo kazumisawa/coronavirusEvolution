@@ -1,13 +1,17 @@
-# obtain trajectory of nucleotide contents version 0.3
+# obtain trajectory of nucleotide contents 
+# version 0.3 by Kazuharu Misawa 2022/02/13
 import sys
 import math
-import re
 import numpy as np
-from Bio import SeqIO
 import random
+import re
 import statistics
+from io import StringIO
+from Bio import AlignIO
+from Bio import SeqIO
+from Bio.Align.Applications import MafftCommandline
 
-# 子孫と祖先の配列データからpairをカウント
+# Count nucleotide pairs between descendant and ancestor from sequences
 def pairCount(ancestor, descendant):
     alphabet = set(ancestor) | set(descendant)
     pairC = dict()
@@ -20,8 +24,7 @@ def pairCount(ancestor, descendant):
         pairC[tag] = pairC[tag] + 1
     return pairC
 
-
-# pairデータから祖先塩基をカウント
+# Count ancestral nucleotideds from pair counts
 def pair2nucCount(pair):
     nucleotideCount = dict()
     #alphabet = set( "".join( pair.keys() ) )
@@ -32,6 +35,7 @@ def pair2nucCount(pair):
         nucleotideCount[tag[0]] += pair[tag]
     return nucleotideCount
 
+# convert pair counts to a 4x4 matrix
 def Nt(pairC):
     result = np.zeros( (4,4) )
     alphabet = "ctga"
@@ -45,41 +49,43 @@ def Nt(pairC):
             #print(a, b, pairC[b+a])
     return result
 
-# calculate merginals and put them into a diagnonal matrix 
-def merginal(M):
-    s = M.shape
-    vector = np.zeros( s[0] )
-    # for each row
-    for i in range(s[0]):
-        # sum all elements in a row
-        for j in range(s[1]):
-            vector[j] += M[i,j]
-    return list(vector)
-
+# Calculate the merginal frequencies of the pair matrix 
+# and put them to diagonal component of the ancestor matrix N0.
 def N0(Nt):
-    return diagonal(merginal(Nt))
+    s = Nt.shape
+    vector = np.zeros( s[0] )
+    # a loop for rows
+    for i in range(s[0]):
+        # a loop for columns
+        for j in range(s[1]):
+            vector[j] += Nt[i,j]
+    result = np.zeros( s )
+    for i in range( s[0] ):
+        result[i,i] = vector[i]
+    return result
 
-# 逆行列。
+# the inverse matrix of N0
 def N0inv(N0):
     result = np.zeros_like(N0)
     for i in range( result.shape[0] ):
         result[i][i] = 1/(N0[i][i])
     return result
 
-# P(t)を推定。祖先配列の塩基数で割る
+# P(t) is estimated by dividing 
+# by the number of nucleotides in the ancestral sequence.
 def Pt(Nt, N0inv):
     return  Nt.dot(N0inv) 
 
-#matrixの表示
+#print a matrix
 def printMatrix(M):
     s = M.shape
     for i in range(s[0]):
         print (i, end="\t")
         for j in range(s[1]):
-            print (int(M[i,j]) , end="\t")
+            print (M[i,j] , end="\t")
         print("")
 
-# wxyxを一度に表示
+# calculate w, x, y, and z.  See details in manuscript
 def wxyz(Pt):
     S = np.matrix( [ [0,2,1,1],[1,0,1,1],[1,-1,0,1],[1,-1,1,0] ] );
     result = Pt.dot(S)
@@ -87,17 +93,17 @@ def wxyz(Pt):
 #    printMatrix(result)
     return ( result[0,0]/3, result[1,1]/2, (result[2,2] + result[3,3] ) /6 )
 
-#atの推定
+#estimating the rate of non-C-to-U substitions
 def atEstimate(z):
     return -math.log( 1.0 - 4.0*z)/4
 
-#b=(3a+h)として、btの推定
+#estimating b=(3a+h)
 def btEstimate(xy, z):
     exp4at = 1.0 - 4.0*z 
     result = -math.log( exp4at - xy ) 
     return result
 
-#htの推定
+#estimating the rate of C-to-U substitions
 def htEstimate(xy, z):
     at = atEstimate(z)
     ht = btEstimate(xy, z) - 3*at
