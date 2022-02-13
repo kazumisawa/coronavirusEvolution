@@ -9,7 +9,7 @@ from Bio import AlignIO
 from Bio import SeqIO
 from Bio.Align.Applications import MafftCommandline
 
-# 子孫と祖先の配列データからpairをカウント
+# Count nucleotide pairs between descendant and ancestor from sequences
 def pairCount(ancestor, descendant):
     alphabet = set(ancestor) | set(descendant)
     pairC = dict()
@@ -22,8 +22,7 @@ def pairCount(ancestor, descendant):
         pairC[tag] = pairC[tag] + 1
     return pairC
 
-
-# pairデータから祖先塩基をカウント
+# Count ancestral nucleotideds from pair counts
 def pair2nucCount(pair):
     nucleotideCount = dict()
     #alphabet = set( "".join( pair.keys() ) )
@@ -34,6 +33,7 @@ def pair2nucCount(pair):
         nucleotideCount[tag[0]] += pair[tag]
     return nucleotideCount
 
+# convert pair counts to a 4x4 matrix
 def Nt(pairC):
     result = np.zeros( (4,4) )
     alphabet = "ctga"
@@ -47,7 +47,8 @@ def Nt(pairC):
             #print(a, b, pairC[b+a])
     return result
 
-# matrixのmerginalを計算し、対角成分（祖先配列）に
+# Calculate the merginal frequencies of the pair matrix 
+# and put them to diagonal component of the ancestor matrix N0.
 def N0(Nt):
     s = Nt.shape
     vector = np.zeros( s[0] )
@@ -61,7 +62,7 @@ def N0(Nt):
         result[i,i] = vector[i]
     return result
 
-# 逆行列。
+# the inverse matrix of N0
 def N0inv(N0):
     result = np.zeros_like(N0)
     for i in range( result.shape[0] ):
