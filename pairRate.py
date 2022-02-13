@@ -1,9 +1,13 @@
 import sys
 import math
 import numpy as np
-from Bio import AlignIO
 import random
+import re
 import statistics
+from io import StringIO
+from Bio import AlignIO
+from Bio import SeqIO
+from Bio.Align.Applications import MafftCommandline
 
 # 子孫と祖先の配列データからpairをカウント
 def pairCount(ancestor, descendant):
@@ -101,15 +105,38 @@ def htEstimate(xy, z):
     ht = btEstimate(xy, z) - 3*at
     return ht
 
-alignment = AlignIO.read(sys.argv[1],"fasta")
+
+#############start##################
+
+referenceList = list()
+targetList = list()
+
+for seq_record in SeqIO.parse(sys.argv[1],"fasta"):
+    referenceList.append(seq_record)
+
+for seq_record in SeqIO.parse(sys.argv[2],"fasta"):
+    targetList.append(seq_record)
+
 a0list, h0list = list(), list()
-n = len(alignment)
-for k in range(1, n):
+
+
+n = len(targetList)
+org = {"C":0, "T":1, "G":2, "A":3}
+print("ID", "a", "h", sep="\t")
+
+for k in range(n):
+    #pairwizeAlignment
+    with open("temp.fas","w") as tmpfile:
+        SeqIO.write( referenceList[0], tmpfile, "fasta")
+        SeqIO.write( targetList[k], tmpfile, "fasta")
+    mafft_cline = MafftCommandline("mafft", input = "temp.fas")
+    output1, output2 = mafft_cline()
+    alignment = AlignIO.read(StringIO(output1), "fasta")
 #    print( alignment[k].id, end="\t" )
-    pair = pairCount(alignment[0].seq, alignment[k].seq)
+    pair = pairCount(alignment[0].seq, alignment[1].seq)
 #    print( "observed difference") 
     nt =  Nt(pair)
-    printMatrix(nt)
+#    printMatrix(nt)
 #    print( "ansestor again" )
     n0 =  N0(nt) 
 #    printMatrix( n0 )
@@ -121,32 +148,7 @@ for k in range(1, n):
 #    printMatrix(pt)
     x =  wxyz ( pt )
 #    print("estimate", btEstimate( x[1], x[2] ))
-#    bootstrap
-
-    a0list.append( atEstimate( x[2] ) )
-    h0list.append( htEstimate( x[1], x[2] ) )
-
-    alist, hlist = list(), list()
-    bootNo = 1000 
-    for i in range(bootNo):
-        l = len(alignment[0])
-        boot = list( random.choices( range(l), k=l ) )
-        a0boot, akboot = list(), list()
-        for j in boot:
-            a0boot.append( alignment[0][j] )
-            akboot.append( alignment[k][j] )
-        pairBoot = pairCount( "".join(a0boot), "".join(akboot) )
-        nt =  Nt(pairBoot)
-        n0 =  N0(nt) 
-        n0inv = N0inv( n0 )
-        pt =  Pt( nt, n0inv )
-        xboot =  wxyz ( pt )
-        alist.append( atEstimate( xboot[2] ) )
-        hlist.append( htEstimate( xboot[1], xboot[2]) )
-#    print( atEstimate( x[2] ),statistics.pstdev( alist), sep="\t", end ="\t")
-#    print( htEstimate( x[1], x[2] ),statistics.pstdev( hlist), sep="\t")
-
-print( statistics.mean(a0list), statistics.pstdev( a0list), sep="\t", end ="\t")
-print( statistics.mean(h0list), statistics.pstdev( h0list), sep="\t")
-print("")
+    print( alignment[1].id, end="\t" )
+    print( atEstimate( x[2] ), end ="\t")
+    print( htEstimate( x[1], x[2] ) )
 
