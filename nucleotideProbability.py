@@ -48,24 +48,27 @@ def T(a, h, t):
 
 def Pmatrix(a, h, t):
     # transpose on June 7th
-    
+    b = 3*a + h
+    tmp1 = np.dot( Qprimematrix(a, h ,t), T(a, h ,t) )
+    tmp2 = np.dot( tmp1, Q )
+    result = tmp / b / 4
     return result
-
 
 def diffTa(a, h, t):
     # unchanged by transpose because it is a diagonal matrix
     result = np.zeros( (4,4) )
     b = 3*a + h
     result[1,1] = -3 * t * math.exp( -b* t )
-    result[2,2] = result[3,3] = -4 * t * math.exp( -4*t )
+    result[2,2] = result[3,3] = -4 * t * math.exp( -4*a*t )
     return result
 
 def diffQa(a, h, t):
+    # transpose on June 7th
     result = np.array( [
-                [4,     0,      0,      0],
-                [2,     0,      0,      0],
-                [3,     0,      0,      0],
-                [3,     0,      0,      0]
+		[4,	2,	3,	3],
+		[0,	0,	0,	0],
+		[0,	0,	0,	0],
+		[0,	0,	0,	0]
         ])
     return result
 
@@ -74,11 +77,12 @@ def diffDa(a, h, t):
     return -3/(b*b)
 
 def diffQprimea(a, h, t):
+    # transpose on June 7th
     result = np.array( [
-                [0,     0,      0,      0],
-                [8,     -4,     -4,     -4],
-                [6,     6,      -6,     -6],
-                [-3,    -3,     9,      -3]
+		[0,	8,	6,	-3],
+		[0,	-4,	6,	-3],
+		[0,	-4,	-6,	9],
+		[0,	-4,	-6,	-3]
         ])
     return result
 
@@ -89,11 +93,12 @@ def diffTh(a, h, t):
     return result
 
 def diffQh(a, h, t):
+    # transpose on June 7th
     result = np.array( [
-            [0, 0,  0,  0],
-            [2, 0,  0,  0],
-            [1, 0,  0,  0],
-            [1, 0,  0,  0]
+		[0,	2,	1,	1],
+		[0,	0,	0,	0],
+		[0,	0,	0,	0],
+		[0,	0,	0,	0]
         ])
     return result
 
@@ -101,13 +106,13 @@ def diffDh(a, h, t):
     b = 3*a + h
     return -1/(b*b)
 
-
 def diffQprimeh(a, h, t):
-    result = np.array( [
-                [0, 0,  0,  0],
-                [4, 0,  0,  0],
-                [2, 2,  -2, -2],
-                [-1,    -1, 3,  -1]
+    # transpose on June 7th
+    result = np.array( 
+		[0,	4,	2,	-1],
+		[0,	0,	2,	-1],
+		[0,	0,	-2,	3],
+		[0,	0,	-2,	-1]
         ])
     return result
 
