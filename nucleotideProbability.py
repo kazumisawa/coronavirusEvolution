@@ -1,9 +1,10 @@
 import numpy as np
 
 
-def Prob(a, h, T):
+def Rmatrix(a, h, T):
+    # transpose on June 7th
     result = np.array( [a] * 16 ).reshape( (4,4) )
-    result[1,0] = h
+    result[0,1] = h
     result[0,0] = -2*a -h
     result[1,1] = result[2,2] = result[3,3] = -3*a
     return result
