@@ -18,12 +18,46 @@ def Tmatrix(a, h, t):
     result[1,1] = result[2,2] = result[3,3] = -3*a
     return result
 
+def Qmatrix(a, h, t):
+    # transpose on June 7th
+    result = np.array( [
+		[4*a,	2*(h+a),	h+3*a,	h+3*a],
+		[1,	-1,	0,	0],
+		[0,	1,	0,	-1],
+		[0,	0,	1,	-1]    
+    ])
+    return result
+
+def Qprimematrix(a, h, t):
+    # transpose on June 7th
+    result = np.array( [
+		[1,	4*h+8*a,	2*h+6*a,	-h-3*a],
+		[1,	-4*a,	2*h+6*a,	-h-3*a],
+		[1,	-4*a,	-2*h-6*a,	3*h+9*a],
+		[1,	-4*a,	-2*h-6*a,	-h-3*a]
+    ])
+    return result
+
+def T(a, h, t):
+    # unchanged by transpose because it is a diagonal matrix
+    result = np.zeros( (4,4) )
+    b = 3*a + h
+    result[1,1] = math.exp( -b* t )
+    result[2,2] = result[3,3] = math.exp( -4*a*t )
+    return result
+
+def Pmatrix(a, h, t):
+    # transpose on June 7th
+    
+    return result
+
 
 def diffTa(a, h, t):
+    # unchanged by transpose because it is a diagonal matrix
     result = np.zeros( (4,4) )
     b = 3*a + h
     result[1,1] = -3 * t * math.exp( -b* t )
-    result[2,2] = result[3,3] = -4 * t * math.exp( -4+t )
+    result[2,2] = result[3,3] = -4 * t * math.exp( -4*t )
     return result
 
 def diffQa(a, h, t):
@@ -38,7 +72,6 @@ def diffQa(a, h, t):
 def diffDa(a, h, t):
     b = 3*a + h
     return -3/(b*b)
-
 
 def diffQprimea(a, h, t):
     result = np.array( [
