@@ -143,7 +143,7 @@ for i in range(seqLen):
 
 #print(ancestral)
 
-P =  Prob(0.01,0.03,1)
+P =  Pmatrix(0.01,0.03,1)
 
 print(ancestral)
 
