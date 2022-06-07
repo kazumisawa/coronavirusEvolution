@@ -50,7 +50,7 @@ def Pmatrix(a, h, t):
     # transpose on June 7th
     b = 3*a + h
     tmp1 = np.dot( Qprimematrix(a, h ,t), T(a, h ,t) )
-    tmp2 = np.dot( tmp1, Q )
+    tmp2 = np.dot( tmp1, Qmatrix(a, h, t) )
     result = tmp / b / 4
     return result
 
