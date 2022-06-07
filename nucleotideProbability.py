@@ -51,7 +51,7 @@ def Pmatrix(a, h, t):
     b = 3*a + h
     tmp1 = np.dot( Qprimematrix(a, h ,t), T(a, h ,t) )
     tmp2 = np.dot( tmp1, Qmatrix(a, h, t) )
-    result = tmp / b / 4
+    result = tmp2 / b / 4
     return result
 
 def diffTa(a, h, t):
