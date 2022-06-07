@@ -108,7 +108,7 @@ def diffDh(a, h, t):
 
 def diffQprimeh(a, h, t):
     # transpose on June 7th
-    result = np.array( 
+    result = np.array( [
 		[0,	4,	2,	-1],
 		[0,	0,	2,	-1],
 		[0,	0,	-2,	3],
