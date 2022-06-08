@@ -12,11 +12,13 @@ def Rmatrix(a, h, t):
 
 def Tmatrix(a, h, t):
     # transpose on June 7th
-    result = np.array( [a] * 16 ).reshape( (4,4) )
-    result[0,1] = h
-    result[0,0] = -2*a -h
-    result[1,1] = result[2,2] = result[3,3] = -3*a
+    # unchanged by transpose because it is a diagonal matrix
+    result = np.zeros( (4,4) )
+    b = 3*a + h
+    result[1,1] = math.exp( -b* t )
+    result[2,2] = result[3,3] = math.exp( -4*a*t )
     return result
+
 
 def Qmatrix(a, h, t):
     # transpose on June 7th
@@ -36,14 +38,6 @@ def Qprimematrix(a, h, t):
 		[1,	-4*a,	-2*h-6*a,	3*h+9*a],
 		[1,	-4*a,	-2*h-6*a,	-h-3*a]
     ])
-    return result
-
-def T(a, h, t):
-    # unchanged by transpose because it is a diagonal matrix
-    result = np.zeros( (4,4) )
-    b = 3*a + h
-    result[1,1] = math.exp( -b* t )
-    result[2,2] = result[3,3] = math.exp( -4*a*t )
     return result
 
 def Pmatrix(a, h, t):
@@ -72,9 +66,6 @@ def diffQa(a, h, t):
         ])
     return result
 
-def diffDa(a, h, t):
-    b = 3*a + h
-    return -3/(b*b)
 
 def diffQprimea(a, h, t):
     # transpose on June 7th
@@ -102,10 +93,6 @@ def diffQh(a, h, t):
         ])
     return result
 
-def diffDh(a, h, t):
-    b = 3*a + h
-    return -1/(b*b)
-
 def diffQprimeh(a, h, t):
     # transpose on June 7th
     result = np.array( [
@@ -115,6 +102,20 @@ def diffQprimeh(a, h, t):
 		[0,	0,	-2,	-1]
         ])
     return result
+
+def D(a, h, t):
+    # D: 1/(4*b), a scalar
+    b = 3*a + h
+    return 1/(4*b)
+
+def diffDa(a, h, t):
+    b = 3*a + h
+    return -3/(4*b*b)
+
+def diffDh(a, h, t):
+    b = 3*a + h
+    return -1/(4*b*b)
+
 
 a = 1.0
 h = 3.0
