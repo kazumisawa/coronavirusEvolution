@@ -46,7 +46,7 @@ for k in range(n):
     mafft_cline = MafftCommandline("mafft", input = "temp.fas")
     output1, output2 = mafft_cline()
     alignment = AlignIO.read(StringIO(output1), "fasta")
-    print( sequence2vector( alignment[0].seq) )
-    print( sequence2vector( alignment[1].seq) )
+    print( alignment[0].seq, sequence2vector( alignment[0].seq) )
+    print( alignment[0].seq, sequence2vector( alignment[1].seq) )
     
   
