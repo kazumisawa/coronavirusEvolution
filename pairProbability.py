@@ -12,14 +12,21 @@ from Bio import SeqIO
 from Bio.Align.Applications import MafftCommandline
 import nucleotideProbability
 
+def nuc2num(c):
+    result = -1
+    nucDict = {"c":0, "t":1, "g":2, "a":3, "C":0, "T":1, "G":2, "A":3}
+    try:
+        result = nucDict[ c ]
+    except KeyError as e:
+        pass
+    return result
+
 def sequence2vector(seq):
-    nucDict = {"c":0, "t":1, "g":2, "a":3}
-    result = np.zeros( ( len(seq), len(nucDict) ) )
+    result = np.zeros( ( len(seq), 4 ) )
     for i in range(len(seq)):
-        try:
-            result[  i, nucDict[ seq[i] ]  ] =1
-        except KeyError as e:
-            pass
+        pos = nuc2num( seq[i] )
+        if pos >= 0: 
+            result[  i, pos  ] =1
     return result
 
 # start main #
@@ -53,8 +60,12 @@ for k in range(n):
     print( alignment[0].seq, sequence2vector( alignment[0].seq) )
     print( alignment[1].seq, sequence2vector( alignment[1].seq) )
     ancestral = sequence2vector( alignment[0].seq) 
+    descendant = alignment[1].seq) 
     for i in range( np.shape(ancestral)[0] ):
         site = ancestral[i]
-        print( np.dot( P, site ) )
+        pos = nuc2num( descendant[i] ) 
+        Prob =  np.dot( P, site ) )
+        if pos>=0:
+            print( Prob[pos] )
 
   
