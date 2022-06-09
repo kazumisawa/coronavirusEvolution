@@ -116,39 +116,3 @@ def diffDh(a, h, t):
     b = 3*a + h
     return -1/(4*b*b)
 
-
-a = 1.0
-h = 3.0
-t = 1
-
-print( diffTa(a,h,t), diffQa(a,h,t), diffDa(a,h,t), diffQprimea(a,h,t),sep="\n" )
-print( diffTh(a,h,t), diffQh(a,h,t), diffDh(a,h,t), diffQprimeh(a,h,t),sep="\n" )
-
-
-
-nucleotide = list("CTGA")
-nucDict = dict()
-for i in range( len(nucleotide) ):
-    nucDict[ nucleotide[i] ] = i
-
-
-seq ="AATTGGCCCGG"
-seqLen = len(seq)
-
-ancestral = np.zeros( ( seqLen, len(nucleotide) ) )
-descendant = np.zeros( (seqLen, len(nucleotide) ) )
-
-for i in range(seqLen):
-    c = seq[i]
-    ancestral[ i, nucDict[c] ] =1
-
-#print(ancestral)
-
-P =  Pmatrix(0.01,0.03,1)
-
-print(ancestral)
-
-
-for i in range(seqLen):
-    site = ancestral[i]
-    print( np.dot( P, site ) )
