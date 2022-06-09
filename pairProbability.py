@@ -71,7 +71,7 @@ for k in range(n):
             Pvalue = Prob[pos] 
             if Pvalue > 0:
                 logP += math.log(Pvalue)
-                print(logP)
+#                print(logP)
     print(logP)
 
   
