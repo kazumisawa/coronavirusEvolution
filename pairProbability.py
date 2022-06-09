@@ -15,8 +15,8 @@ def sequence2vector(seq):
     nucDict = {"C":0, "T":1, "G":2, "A":3}
     result = np.zeros( ( len(seq), len(nucDict) ) )
     for i in range(len(seq)):
-        ancestral[  i, nucDict[ seq[i] ]  ] =1
-
+        result[  i, nucDict[ seq[i] ]  ] =1
+    return result
 
 # start main #
 
