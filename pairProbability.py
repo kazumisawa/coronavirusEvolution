@@ -15,7 +15,10 @@ def sequence2vector(seq):
     nucDict = {"c":0, "t":1, "g":2, "a":3}
     result = np.zeros( ( len(seq), len(nucDict) ) )
     for i in range(len(seq)):
-        result[  i, nucDict[ seq[i] ]  ] =1
+        try:
+            result[  i, nucDict[ seq[i] ]  ] =1
+        except KeyError as e:
+            pass
     return result
 
 # start main #
