@@ -15,6 +15,7 @@ def Tmatrix(a, h, t):
     # unchanged by transpose because it is a diagonal matrix
     result = np.zeros( (4,4) )
     b = 3*a + h
+    result[0,0] = 1
     result[1,1] = math.exp( -b* t )
     result[2,2] = result[3,3] = math.exp( -4*a*t )
     return result
@@ -34,9 +35,9 @@ def Qprimematrix(a, h, t):
     # transpose on June 7th
     result = np.array( [
 		[1,	4*h+8*a,	2*h+6*a,	-h-3*a],
-		[1,	-4*a,	2*h+6*a,	-h-3*a],
-		[1,	-4*a,	-2*h-6*a,	3*h+9*a],
-		[1,	-4*a,	-2*h-6*a,	-h-3*a]
+		[1,	-4*a,		2*h+6*a,	-h-3*a],
+		[1,	-4*a,		-2*h-6*a,	3*h+9*a],
+		[1,	-4*a,		-2*h-6*a,	-h-3*a]
     ])
     return result
 
