@@ -37,7 +37,10 @@ a0list, h0list = list(), list()
 
 
 n = len(targetList)
-
+a = 1.0
+h = 3.0
+t = 1
+P = nucleotideProbability.Pmatrix(a, h, t)
 
 for k in range(n):
     #pairwizeAlignment
@@ -49,38 +52,9 @@ for k in range(n):
     alignment = AlignIO.read(StringIO(output1), "fasta")
     print( alignment[0].seq, sequence2vector( alignment[0].seq) )
     print( alignment[1].seq, sequence2vector( alignment[1].seq) )
-
-
-a = 1.0
-h = 3.0
-t = 1
-
-
-R = nucleotideProbability.Rmatrix(a, h, t)
-T = nucleotideProbability.Tmatrix(a, h, t)
-Q = nucleotideProbability.Qmatrix(a, h, t)
-Qprime = nucleotideProbability.Qprimematrix(a, h, t)
-
-diffTa = nucleotideProbability.diffTa(a, h, t)
-diffQa = nucleotideProbability.diffQa(a, h, t)
-diffQprimea = nucleotideProbability.diffQprimea(a, h, t)
-
-diffTh = nucleotideProbability.diffTh(a, h, t)
-diffQh = nucleotideProbability.diffQh(a, h, t)
-diffQprimeh = nucleotideProbability.diffQprimeh(a, h, t)
-
-D = nucleotideProbability.D(a, h, t)
-diffDa = nucleotideProbability.diffDa(a, h, t)
-diffDh = nucleotideProbability.diffDh(a, h, t)
-
-    
-print( diffTa, diffQa, diffDa, diffQprimea, sep="\n" )
-print( diffTh, diffQh, diffDh, diffQprimeh, sep="\n" )
-
-
-
-#for i in range(seqLen):
-#    site = ancestral[i]
-#    print( np.dot( P, site ) )
+    ancestral = sequence2vector( alignment[0].seq) 
+    for i in range( np.shape(a)[0] ):
+        site = ancestral[i]
+        print( np.dot( P, site ) )
 
   
