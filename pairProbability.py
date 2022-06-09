@@ -11,6 +11,26 @@ from Bio import AlignIO
 from Bio import SeqIO
 from Bio.Align.Applications import MafftCommandline
 
+
+# start main #
+
+referenceList = list()
+targetList = list()
+
+for seq_record in SeqIO.parse(sys.argv[1],"fasta"):
+    referenceList.append(seq_record)
+
+for seq_record in SeqIO.parse(sys.argv[2],"fasta"):
+    targetList.append(seq_record)
+
+a0list, h0list = list(), list()
+
+
+n = len(targetList)
+org = {"C":0, "T":1, "G":2, "A":3}
+print("ID", "a", "h", sep="\t")
+
+
 for k in range(n):
     #pairwizeAlignment
     with open("temp.fas","w") as tmpfile:
