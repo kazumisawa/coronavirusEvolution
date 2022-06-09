@@ -10,6 +10,7 @@ from io import StringIO
 from Bio import AlignIO
 from Bio import SeqIO
 from Bio.Align.Applications import MafftCommandline
+import nucleotideProbability
 
 def sequence2vector(seq):
     nucDict = {"c":0, "t":1, "g":2, "a":3}
@@ -48,5 +49,19 @@ for k in range(n):
     alignment = AlignIO.read(StringIO(output1), "fasta")
     print( alignment[0].seq, sequence2vector( alignment[0].seq) )
     print( alignment[1].seq, sequence2vector( alignment[1].seq) )
-    
+
+
+a = 1.0
+h = 3.0
+t = 1
+
+print( diffTa(a,h,t), diffQa(a,h,t), diffDa(a,h,t), diffQprimea(a,h,t),sep="\n" )
+print( diffTh(a,h,t), diffQh(a,h,t), diffDh(a,h,t), diffQprimeh(a,h,t),sep="\n" )
+
+
+
+#for i in range(seqLen):
+#    site = ancestral[i]
+#    print( np.dot( P, site ) )
+
   
