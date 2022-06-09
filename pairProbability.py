@@ -57,11 +57,12 @@ for k in range(n):
     mafft_cline = MafftCommandline("mafft", input = "temp.fas")
     output1, output2 = mafft_cline()
     alignment = AlignIO.read(StringIO(output1), "fasta")
-    print( alignment[0].seq, sequence2vector( alignment[0].seq) )
-    print( alignment[1].seq, sequence2vector( alignment[1].seq) )
+#    print( alignment[0].seq, sequence2vector( alignment[0].seq) )
+#    print( alignment[1].seq, sequence2vector( alignment[1].seq) )
     ancestral = sequence2vector( alignment[0].seq) 
     descendant = alignment[1].seq
     logP = 0
+    print( np.shape(ancestral) )
     for i in range( np.shape(ancestral)[0] ):
         site = ancestral[i]
         pos = nuc2num( descendant[i] ) 
