@@ -55,8 +55,8 @@ a = 1.0
 h = 3.0
 t = 1
 
-print( diffTa(a,h,t), diffQa(a,h,t), diffDa(a,h,t), diffQprimea(a,h,t),sep="\n" )
-print( diffTh(a,h,t), diffQh(a,h,t), diffDh(a,h,t), diffQprimeh(a,h,t),sep="\n" )
+print( nucleotideProbability.diffTa(a,h,t), nucleotideProbability.diffQa(a,h,t), diffDa(a,h,t), diffQprimea(a,h,t),sep="\n" )
+print( nucleotideProbability.diffTh(a,h,t), nucleotideProbability.diffQh(a,h,t), diffDh(a,h,t), diffQprimeh(a,h,t),sep="\n" )
 
 
 
