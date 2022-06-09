@@ -64,7 +64,7 @@ for k in range(n):
     for i in range( np.shape(ancestral)[0] ):
         site = ancestral[i]
         pos = nuc2num( descendant[i] ) 
-        Prob =  np.dot( P, site ) )
+        Prob =  np.dot( P, site ) 
         if pos>=0:
             print( Prob[pos] )
 
