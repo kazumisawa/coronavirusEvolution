@@ -12,7 +12,7 @@ from Bio import SeqIO
 from Bio.Align.Applications import MafftCommandline
 
 def sequence2vector(seq):
-    nucDict = {"C":0, "T":1, "G":2, "A":3}
+    nucDict = {"c":0, "t":1, "g":2, "a":3}
     result = np.zeros( ( len(seq), len(nucDict) ) )
     for i in range(len(seq)):
         result[  i, nucDict[ seq[i] ]  ] =1
