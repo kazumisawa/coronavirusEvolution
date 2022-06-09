@@ -53,7 +53,7 @@ for k in range(n):
     print( alignment[0].seq, sequence2vector( alignment[0].seq) )
     print( alignment[1].seq, sequence2vector( alignment[1].seq) )
     ancestral = sequence2vector( alignment[0].seq) 
-    for i in range( np.shape(a)[0] ):
+    for i in range( np.shape(ancestral)[0] ):
         site = ancestral[i]
         print( np.dot( P, site ) )
 
