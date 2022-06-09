@@ -70,6 +70,7 @@ for k in range(n):
             P = Prob[pos] 
             if P > 0:
                 logP += math.log(P)
+                print(logP)
     print(logP)
 
   
