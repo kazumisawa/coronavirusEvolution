@@ -37,8 +37,8 @@ a0list, h0list = list(), list()
 
 
 n = len(targetList)
-a = 1.0
-h = 3.0
+a = 1.48e-4
+h = 1.95e-3
 t = 1
 P = nucleotideProbability.Pmatrix(a, h, t)
 
