@@ -11,6 +11,12 @@ from Bio import AlignIO
 from Bio import SeqIO
 from Bio.Align.Applications import MafftCommandline
 
+def sequence2vector(seq):
+    nucDict = {"C":0, "T":1, "G":2, "A":3}
+    result = np.zeros( ( len(seq), len(nucDict) ) )
+    for i in range(len(seq)):
+        ancestral[  i, nucDict[ seq[i] ]  ] =1
+
 
 # start main #
 
@@ -27,8 +33,6 @@ a0list, h0list = list(), list()
 
 
 n = len(targetList)
-org = {"C":0, "T":1, "G":2, "A":3}
-print("ID", "a", "h", sep="\t")
 
 
 for k in range(n):
@@ -39,6 +43,7 @@ for k in range(n):
     mafft_cline = MafftCommandline("mafft", input = "temp.fas")
     output1, output2 = mafft_cline()
     alignment = AlignIO.read(StringIO(output1), "fasta")
-#    pair = pairCount(alignment[0].seq, alignment[1].seq)
-    print( alignment )
+    print( sequence2vector( alignment[0].seq) )
+    print( sequence2vector( alignment[1].seq) )
+    
   
