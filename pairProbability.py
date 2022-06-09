@@ -68,9 +68,9 @@ for k in range(n):
         pos = nuc2num( descendant[i] ) 
         if pos>=0:
             Prob =  np.dot( P, site )
-            P = Prob[pos] 
-            if P > 0:
-                logP += math.log(P)
+            Pvalue = Prob[pos] 
+            if Pvalue > 0:
+                logP += math.log(Pvalue)
                 print(logP)
     print(logP)
 
