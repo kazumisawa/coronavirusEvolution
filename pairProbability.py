@@ -61,11 +61,15 @@ for k in range(n):
     print( alignment[1].seq, sequence2vector( alignment[1].seq) )
     ancestral = sequence2vector( alignment[0].seq) 
     descendant = alignment[1].seq
+    logP = 0
     for i in range( np.shape(ancestral)[0] ):
         site = ancestral[i]
         pos = nuc2num( descendant[i] ) 
-        Prob =  np.dot( P, site ) 
         if pos>=0:
-            print( Prob[pos] )
+            Prob =  np.dot( P, site )
+            P = Prob[pos] 
+            if P > 0:
+                logP += math.log(P)
+    :wprint(logP)
 
   
