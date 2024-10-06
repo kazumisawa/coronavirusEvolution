@@ -7,7 +7,7 @@ NAR Genomics and Bioinformatics 6(1):1-7
 https://doi.org/10.1093/nargab/lqae009
 
 pairRate.py Manual
-Function: Estimates the evolutionary rate by comparing two FASTA files: one representing an ancestral sequence and the other representing descendant sequences.
+Function: Estimates the evolutionary rate by comparing two FASTA files: one representing an ancestral sequence and the other representing descendant sequences.　pairRate.py internally calls MAFFT to perform the pairwise alignment of ancestor.fasta and descendant.fasta.
 
 Usage:
 python pairRate.py ancestor.fasta descendants.fasta
